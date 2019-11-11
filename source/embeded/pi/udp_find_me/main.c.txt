@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+int main()
+{
+    unsigned short port = 8080; // 设置端口号，该端口号的进程可以接收到广播数据
+    char *server_ip = "255.255.255.255"; // 受限广播地址
+
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0); // 初始化套接字
+    if (sockfd < 0)
+    {
+        perror("socket");
+        exit(1);
+    }
+    // 初始化套接字地址相关信息
+    struct sockaddr_in dest_addr;
+    // 清空数组
+    bzero(&dest_addr, sizeof(dest_addr));
+    // 设置为ipv4
+    dest_addr.sin_family = AF_INET;
+    // 把主机字节序转换为网络字节序（port）
+    dest_addr.sin_port = htons(port); 
+    // 把主机字节序转换为网络字节序（IP）
+    inet_pton(AF_INET, server_ip, &dest_addr.sin_addr);
+    
+    printf("send data to UDP server %s : %d\n", server_ip, port);
+    
+    // 设置为广播类型
+    int opt = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &opt, sizeof(opt));
+    char send_buf[512] = "hello";
+
+    // 发送数据到同一个网段的其他子网
+    sendto(sockfd, send_buf, strlen(send_buf), 0, 
+            (struct sockaddr*)&dest_addr, sizeof(dest_addr));
+    
+    // 关闭套接字描述符
+    close(sockfd);
+    
+    return 0;
+}
