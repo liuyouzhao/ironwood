@@ -12,9 +12,6 @@ static int left_wheel_state = 0;
 static int right_wheel_state = 0;
 static int left_wheel_speed = 0;
 static int right_wheel_speed = 0;
-static int speed_left_fix = -2;
-static int speed_right_fix = 0;
-
 
 static int left_wheel_up_delayms = 0;
 static int left_wheel_down_delayms = 0;
@@ -205,8 +202,8 @@ void *pthread_func_console(void *no_use)
 		if(strcmp("fd", command) == 0)
 		{
 			pause_wheels();
-			set_wheel_speed(1, speed + speed_left_fix);
-			set_wheel_speed(0, speed + speed_right_fix);
+			set_wheel_speed(1, speed);
+			set_wheel_speed(0, speed);
 			left_wheel_state = STATE_FORWARD;
 			left_wheel_speed = speed;
 			right_wheel_state = STATE_FORWARD;
@@ -215,14 +212,14 @@ void *pthread_func_console(void *no_use)
 		else if(strcmp("bk", command) == 0)
 		{
 			pause_wheels();
-			set_wheel_speed(1, speed + speed_left_fix);
-			set_wheel_speed(0, speed + speed_right_fix);
+			set_wheel_speed(1, speed);
+			set_wheel_speed(0, speed);
 			left_wheel_state = STATE_BACK;
 			left_wheel_speed = speed;
 			right_wheel_state = STATE_BACK;
 			right_wheel_speed = speed;
 		}
-		else if(strcmp("rt", command) == 0)
+		else if(strcmp("lt", command) == 0)
 		{
 			pause_wheels();
 			set_wheel_speed(1, speed);
@@ -232,7 +229,7 @@ void *pthread_func_console(void *no_use)
 			right_wheel_state = STATE_FORWARD;
 			right_wheel_speed = speed;
 		}
-		else if(strcmp("lt", command) == 0)
+		else if(strcmp("rt", command) == 0)
 		{
 			pause_wheels();
 			set_wheel_speed(1, speed);
@@ -250,8 +247,10 @@ static void __test()
 {
 	while(1)
 	{
-		digitalWrite(1, LOW);
-		digitalWrite(0, HIGH);
+		digitalWrite(3, HIGH);
+		digitalWrite(2, LOW);
+		digitalWrite(0, LOW);
+		digitalWrite(1, HIGH);
 	}
 
 }
@@ -273,7 +272,7 @@ int main(void)
 	pinMode (3, OUTPUT); 
 	
 
-	//__test();
+	__test();
 
 
 	pthread_create(&pthread_leftwheel_tid, NULL, pthread_func_left_wheel, NULL);
