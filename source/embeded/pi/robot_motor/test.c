@@ -46,11 +46,26 @@ static void __test()
 {
     while(1)
     {
+#if 1
+        // Forward
         digitalWrite(M1_A, HIGH);
         digitalWrite(M1_B, LOW);
-        digitalWrite(M2_A, HIGH);
+	digitalWrite(M2_A, LOW);
+        digitalWrite(M2_B, HIGH);
+        usleep(1000 * 5000);
+#else
+        // End
+	digitalWrite(M2_A, HIGH);
         digitalWrite(M2_B, LOW);
-//        usleep(1000);
+        digitalWrite(M1_A, LOW);
+        digitalWrite(M1_B, HIGH);
+        usleep(1000 * 5000);
+	digitalWrite(M2_A, LOW);
+        digitalWrite(M2_B, LOW);
+        digitalWrite(M1_A, LOW);
+        digitalWrite(M1_B, LOW);
+        usleep(1000 * 5000);
+#endif
     }
 }
 
@@ -72,7 +87,7 @@ int main(void)
     pinMode (M1_B, OUTPUT); 
     pinMode (M2_A, OUTPUT); 
     pinMode (M2_B, OUTPUT); 
-	
+
     __test();
 
     return 0;
