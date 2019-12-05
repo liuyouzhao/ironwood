@@ -1,4 +1,4 @@
-class IWSUdpSecClient {
+class IWSNetVerificator {
 
 	constructor(uuid) {
 		this.lastReqTime = null;
@@ -15,9 +15,13 @@ class IWSUdpSecClient {
 		];
 	}
 	
+	verify(requestObject) {
+	
+	}
+	
 	trigger() {
 		
 	}
 }
 
-module.export = IWSUdpSecClient;
+module.exports = IWSNetVerificator;

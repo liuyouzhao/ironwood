@@ -29,4 +29,4 @@ class IWLog {
 	}
 }
 
-module.export = new IWLog();
+module.exports = new IWLog();
